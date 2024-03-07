@@ -88,34 +88,14 @@ namespace laboratorio5
 
         private void button3_Click(object sender, EventArgs e)
         {
-            CargarEmpleados();
-            CargarAsistencia();
-           
-            foreach (Empleado empleado in empleados)
-            {
-                int nombreEmpleado = Convert.ToInt32(comboBox1.SelectedValue);
-                foreach (Asistencia asistencia in asistencias)
-                {
-                    foreach (Reporte reporte in reportes)
-                    {
-                        if (nombreEmpleado == empleado.NoEmpleado)
-                        {
-                            if (nombreEmpleado == asistencia.NoEmpleado)
-                            {
-                                Buscador buscador = new Buscador();
-                                buscador.NombreEmpleado = empleado.Nombre;
-                                buscador.Mes = asistencia.Mes;
-                                buscador.Sueldo = reporte.SueldoPersona;
+            int selectedEmpleadoId = (int)comboBox1.SelectedValue;
+            Empleado selectedEmpleado = empleados.FirstOrDefault(emp => emp.NoEmpleado == selectedEmpleadoId);
 
-                                buscadors.Add(buscador);
-                            }
-                        }
-                    }
-                }
+            if (selectedEmpleado != null)
+            {
+                // Muestra los datos del empleado seleccionado en alguna parte de la interfaz de usuario
+                MessageBox.Show($"Empleado seleccionado: {selectedEmpleado.Nombre}, NoEmpleado: {selectedEmpleado.NoEmpleado}, Sueldo: {selectedEmpleado.Sueldo}");
             }
-            dataGridView4.DataSource = null;
-            dataGridView4.DataSource = buscadors;
-            dataGridView4.Refresh();
         }
         private void cargarreporte()
         {
@@ -143,31 +123,7 @@ namespace laboratorio5
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            foreach (Empleado empleado in empleados)
-            {
-                int nombreEmpleado = Convert.ToInt32(comboBox1.SelectedValue);
-                foreach (Asistencia asistencia in asistencias)
-                {
-                    foreach (Reporte reporte in reportes)
-                    {
-                        if (nombreEmpleado == empleado.NoEmpleado)
-                        {
-                            if (nombreEmpleado == asistencia.NoEmpleado)
-                            {
-                                Buscador buscador = new Buscador();
-                                buscador.NombreEmpleado = empleado.Nombre;
-                                buscador.Mes = asistencia.Mes;
-                                buscador.Sueldo = reporte.SueldoPersona;
-
-                                buscadors.Add(buscador);
-                            }
-                        }
-                    }
-                }
-            }
-            dataGridView4.DataSource = null;
-            dataGridView4.DataSource = buscadors;
-            dataGridView4.Refresh();
+            
         }
     }
 }
