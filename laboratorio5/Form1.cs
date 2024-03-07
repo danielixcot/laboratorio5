@@ -16,6 +16,7 @@ namespace laboratorio5
         List<Empleado> empleados = new List<Empleado>();
         List<Asistencia> asistencias = new List<Asistencia>();
         List<Reporte> reportes = new List<Reporte>();
+        List<Buscador> buscadors = new List<Buscador>();
         public Form1()
         {
             InitializeComponent();
@@ -73,14 +74,60 @@ namespace laboratorio5
 
         private void button2_Click(object sender, EventArgs e)
         {
+            cargarreporte();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            CargarEmpleados();
+            comboBox1.DisplayMember = "Nombre";
+            comboBox1.ValueMember = "NoEmpleado";
+            comboBox1.DataSource = empleados;
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            CargarEmpleados();
+            CargarAsistencia();
+           
+            foreach (Empleado empleado in empleados)
+            {
+                int nombreEmpleado = Convert.ToInt32(comboBox1.SelectedValue);
+                foreach (Asistencia asistencia in asistencias)
+                {
+                    foreach (Reporte reporte in reportes)
+                    {
+                        if (nombreEmpleado == empleado.NoEmpleado)
+                        {
+                            if (nombreEmpleado == asistencia.NoEmpleado)
+                            {
+                                Buscador buscador = new Buscador();
+                                buscador.NombreEmpleado = empleado.Nombre;
+                                buscador.Mes = asistencia.Mes;
+                                buscador.Sueldo = reporte.SueldoPersona;
+
+                                buscadors.Add(buscador);
+                            }
+                        }
+                    }
+                }
+            }
+            dataGridView4.DataSource = null;
+            dataGridView4.DataSource = buscadors;
+            dataGridView4.Refresh();
+        }
+        private void cargarreporte()
+        {
+            Reporte reporte = new Reporte();
             foreach (Empleado empleado in empleados)
             {
                 int noEmpleado = empleado.NoEmpleado;
                 foreach (Asistencia asistencia in asistencias)
                 {
-                    if(empleado.NoEmpleado == asistencia.NoEmpleado)
+                    if (empleado.NoEmpleado == asistencia.NoEmpleado)
                     {
-                        Reporte reporte = new Reporte();
+
                         reporte.NombreEmpleado = empleado.Nombre;
                         reporte.Mes = asistencia.Mes;
                         reporte.SueldoPersona = empleado.Sueldo * asistencia.HorasMes;
@@ -92,6 +139,35 @@ namespace laboratorio5
             dataGridView3.DataSource = null;
             dataGridView3.DataSource = reportes;
             dataGridView3.Refresh();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (Empleado empleado in empleados)
+            {
+                int nombreEmpleado = Convert.ToInt32(comboBox1.SelectedValue);
+                foreach (Asistencia asistencia in asistencias)
+                {
+                    foreach (Reporte reporte in reportes)
+                    {
+                        if (nombreEmpleado == empleado.NoEmpleado)
+                        {
+                            if (nombreEmpleado == asistencia.NoEmpleado)
+                            {
+                                Buscador buscador = new Buscador();
+                                buscador.NombreEmpleado = empleado.Nombre;
+                                buscador.Mes = asistencia.Mes;
+                                buscador.Sueldo = reporte.SueldoPersona;
+
+                                buscadors.Add(buscador);
+                            }
+                        }
+                    }
+                }
+            }
+            dataGridView4.DataSource = null;
+            dataGridView4.DataSource = buscadors;
+            dataGridView4.Refresh();
         }
     }
 }
